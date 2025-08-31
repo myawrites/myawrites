@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: anythingllm
+    env: docker
+    plan: free
+    dockerfilePath: ./docker/Dockerfile
+    autoDeploy: true
