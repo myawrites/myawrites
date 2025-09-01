@@ -153,6 +153,19 @@ model workspaces {
   workspace_parsed_files       workspace_parsed_files[]
 }
 
+model personas {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  prompt       String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  workspace    workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId  Int
+
+  @@unique([name, workspaceId]) // ensures no duplicate persona names within a workspace
+}
+
 model workspace_threads {
   id                     Int                      @id @default(autoincrement())
   name                   String
