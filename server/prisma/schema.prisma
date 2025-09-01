@@ -151,19 +151,19 @@ model workspaces {
   workspace_agent_invocations  workspace_agent_invocations[]
   prompt_history               prompt_history[]
   workspace_parsed_files       workspace_parsed_files[]
+  personas                     Persona[]  @relation("WorkspacePersonas")
 }
 
-model personas {
+model Persona {
   id           Int        @id @default(autoincrement())
-  name         String
+  name         String     @unique
   description  String?
-  prompt       String
+  role         String     // the persona’s “system prompt” or behavioral instructions
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  workspace    workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId  Int
 
-  @@unique([name, workspaceId]) // ensures no duplicate persona names within a workspace
+  // Relations
+  workspaces   Workspace[] @relation("WorkspacePersonas")
 }
 
 model workspace_threads {
